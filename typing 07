@@ -1,0 +1,85 @@
+GraphicsWindow.left=0
+GraphicsWindow.top=0
+GraphicsWindow.height=800
+GraphicsWindow.width=1200
+GraphicsWindow.fontname="Consolas"
+GraphicsWindow.FontSize=20
+
+num_falling_words=3
+gameover=0
+wordnumber=0
+counter=1
+
+wordlist[0]="O"
+wordlist[1]="EXCELLENT"
+wordlist[2]="MINUEND"
+wordlist[3]="SUBTRAHEND"
+wordlist[4]="DIFFERENCE"
+wordlist[5]="FLOW"
+wordlist[7]="CONNECT"
+wordlist[8]="SPARK"
+
+For j=1 to num_falling_words
+wordnumber=wordnumber+1
+thisword[j]=wordlist[wordnumber]
+'GraphicsWindow.DrawBoundText(150*j,50,150,thisword[j])
+x[j]=math.GetRandomNumber(900)+50
+y[j]=0
+
+wordspeed[j]=math.GetRandomNumber(5)
+
+wordgraphic_full[j]=Shapes.AddText(thisword[j])
+typed_letters[j]=""
+wordgraphic_typed[j]=shapes.AddText(typed_letters[j])
+Endfor
+
+GraphicsWindow.keydown=OnKeyDown
+
+Sub OnKeyDown
+  For j=1 To num_falling_words
+    'GraphicsWindow.DrawText(Math.GetRandomNumber(300)+300,Math.GetRandomNumber(300)+400, text.GetSubText(thisword[j], 1, 1)) 'tracing
+  If GraphicsWindow.lastkey=text.GetSubText(thisword[j], 1, 1) Then
+    'GraphicsWindow.BackgroundColor=GraphicsWindow.GetRandomColor() 'tracing
+    
+    'letter_needed[j]=letter_needed[j]+1
+    typed_letters[j]=Text.Append(typed_letters[j], text.GetSubText(thisword[j], 1, 1))
+    thisword[j]=text.GetSubText(thisword[j],2, Text.GetLength(thisword[j])-1)
+    Shapes.Move(wordgraphic_typed[j], x[j], -100)
+    wordgraphic_typed[j]=Shapes.AddText(typed_letters[j])
+  EndIf
+  
+'Check if we need to replace the current word with a new word
+If Text.GetLength(thisword[j])<=0Then
+  GraphicsWindow.BackgroundColor=GraphicsWindow.GetRandomColor()
+    wordnumber=wordnumber+1
+    thisword[j]=wordlist[wordnumber]
+    typed_letters[j]=""
+    Shapes.Move(wordgraphic_full[j], x[j],-100)
+    wordgraphic_full[j]=shapes.AddText(thisword[j])
+    y[j]=0
+    'GraphicsWindow.DrawBoundText(150*j,50+(15*wordnumber),150,thisword[j]) 'what is this?
+    'letter_needed[j]=1
+  EndIf
+ 
+  Endfor
+EndSub
+
+While gameover=0
+  counter=counter+1
+  If counter>40000 Then
+    counter=1
+    For j=1 To num_falling_words
+    y[j]=y[j]+wordspeed[j]
+      If y[j]>800 then
+        gameover=1
+      endif
+   
+   GraphicsWindow.BrushColor="purple"
+   Shapes.Move(wordgraphic_full[j],x[j],y[j])
+   GraphicsWindow.brushcolor="black"
+   Shapes.Move(wordgraphic_typed[j],x[j],y[j])
+   GraphicsWindow.brushcolor="purple"
+   
+  endfor
+  Endif
+endwhile
