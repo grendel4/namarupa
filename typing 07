@@ -56,11 +56,13 @@ Sub OnKeyDown
   
 'Check if we need to replace the current word with a new word
 If Text.GetLength(thisword[j])<=0Then
-  GraphicsWindow.BackgroundColor=GraphicsWindow.GetRandomColor()
+  'GraphicsWindow.BackgroundColor=GraphicsWindow.GetRandomColor() 'for tracing
     wordnumber=wordnumber+1
     thisword[j]=wordlist[wordnumber]
     typed_letters[j]=""
     Shapes.Move(wordgraphic_full[j], x[j],-100)
+    wordgraphic_typed[j]=""
+    GraphicsWindow.brushcolor="#6a5acd"
     wordgraphic_full[j]=shapes.AddText(thisword[j])
     y[j]=0
     'GraphicsWindow.DrawBoundText(150*j,50+(15*wordnumber),150,thisword[j]) 'what is this?
@@ -122,5 +124,7 @@ While gameover=0
    
   Endif
 endwhile
+
+
 
 
