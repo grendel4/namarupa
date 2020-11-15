@@ -29,7 +29,7 @@ For j=1 to num_falling_words
 wordnumber=wordnumber+1
 thisword[j]=wordlist[wordnumber]
 'GraphicsWindow.DrawBoundText(150*j,50,150,thisword[j])
-x[j]=math.GetRandomNumber(900)+50
+x[j]=math.GetRandomNumber(800)+50
 y[j]=0
 
 wordspeed[j]=math.GetRandomNumber(5)
