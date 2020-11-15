@@ -18,6 +18,12 @@ wordlist[4]="DIFFERENCE"
 wordlist[5]="FLOW"
 wordlist[7]="CONNECT"
 wordlist[8]="SPARK"
+wordlist[9]="AZORES"
+wordlist[10]="AURORA"
+wordlist[11]="CIRRUS"
+wordlist[12]="DIRT"
+wordlist[13]="ASTRA"
+wordlist[14]="PLASMA"
 
 For j=1 to num_falling_words
 wordnumber=wordnumber+1
@@ -66,7 +72,7 @@ EndSub
 
 While gameover=0
   counter=counter+1
-  If counter>40000 Then
+  If counter>80000 Then
     counter=1
     For j=1 To num_falling_words
     y[j]=y[j]+wordspeed[j]
@@ -80,6 +86,27 @@ While gameover=0
    Shapes.Move(wordgraphic_typed[j],x[j],y[j])
    GraphicsWindow.brushcolor="purple"
    
-  endfor
+  
+   
+   
+ endfor
+  'trace section
+   GraphicsWindow.brushcolor="#FFFFFF"
+   GraphicsWindow.FillRectangle(1000,0,200,900)
+   GraphicsWindow.brushcolor="purple"
+   GraphicsWindow.DrawText(1000,20, "thisword[1]:")
+   GraphicsWindow.DrawText(1000,40, thisword[1])
+   GraphicsWindow.DrawText(1000,60, "typed_letters[1]:")
+   GraphicsWindow.DrawText(1000,80, typed_letters[1])
+   GraphicsWindow.DrawText(1000,100, "thisword[2]:")
+   GraphicsWindow.DrawText(1000,120, thisword[2])
+   GraphicsWindow.DrawText(1000,140, "typed_letters[2]:")
+   GraphicsWindow.DrawText(1000,160, typed_letters[2])
+   GraphicsWindow.DrawText(1000,180, "thisword[3]:")
+   GraphicsWindow.DrawText(1000,200, thisword[3])
+   GraphicsWindow.DrawText(1000,220, "typed_letters[3]:")
+   GraphicsWindow.DrawText(1000,240, typed_letters[3])
+   
   Endif
 endwhile
+
