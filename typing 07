@@ -107,6 +107,20 @@ While gameover=0
    GraphicsWindow.DrawText(1000,220, "typed_letters[3]:")
    GraphicsWindow.DrawText(1000,240, typed_letters[3])
    
+   GraphicsWindow.DrawText(1000,280, "x[1]:")
+   GraphicsWindow.DrawText(1060,280, x[1])
+   GraphicsWindow.DrawText(1000,300, "y[1]:")
+   GraphicsWindow.DrawText(1060,300, y[1])
+   GraphicsWindow.DrawText(1000,320, "x[2]:")
+   GraphicsWindow.DrawText(1060,320, x[2])
+   GraphicsWindow.DrawText(1000,340, "y[2]:")
+   GraphicsWindow.DrawText(1060,340, y[2])
+   GraphicsWindow.DrawText(1000,360, "x[3]:")
+   GraphicsWindow.DrawText(1060,360, x[3])
+   GraphicsWindow.DrawText(1000,380, "y[3]")
+   GraphicsWindow.DrawText(1060,380, y[3])
+   
   Endif
 endwhile
+
 
