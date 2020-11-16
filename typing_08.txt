@@ -1,0 +1,118 @@
+'Variables
+wordCount = 0
+keyStream = ""
+
+wordlist[1]="excellent"
+wordlist[2]="minuend"
+wordlist[3]="subtrahend"
+wordlist[4]="difference"
+wordlist[5]="flow"
+wordlist[7]="connect"
+wordlist[8]="spark"
+wordlist[9]="azores"
+wordlist[10]="aurora"
+wordlist[11]="cirrus"
+wordlist[12]="dirt"
+wordlist[13]="astra"
+wordlist[14]="plasma"
+
+'***** Shapes and Coordinates *****
+'Key Stream Prompt
+keyStreamText = Shapes.AddText(keyStream)
+Shapes.Move(keyStreamText, 50, 50)
+
+'Lane x coordinates
+xOffset = Math.Floor(GraphicsWindow.Width / 5 / 2)
+laneIncrement = Math.Floor(GraphicsWindow.Width / 5)
+For j = 1 To 5
+    If j = 1 Then
+        lanePosX[j] = xOffset
+    Else
+        lanePosX[j] = lanePosX[j - 1] +  laneIncrement
+    EndIf
+EndFor
+
+'Player Shape and Position
+triangleLane = 1
+triangleLength = 25
+yOffset = GraphicsWindow.Height - 25
+triangle = Shapes.AddTriangle(xOffset, yOffset - Math.Round(triangleLength * Math.SquareRoot(3) / 2), - Math.Round(triangleLength / 2) + xOffset, yOffset, Math.Round(triangleLength / 2) + xOffset, yOffset)
+
+'***** Key-Handling *****
+GraphicsWindow.KeyDown = OnKeyDown
+Sub OnKeyDown
+    If GraphicsWindow.LastKey = "ArrowRight" And Shapes.GetLeft(triangle) + laneIncrement <= GraphicsWindow.Width - 50 Then
+        Shapes.Move(triangle, Shapes.GetLeft(triangle) + laneIncrement, Shapes.GetTop(triangle))
+        triangleLane = triangleLane + 1
+
+        'Reset keyStreamText
+        keyStream = ""
+        Shapes.setText(keyStreamText, keyStream)
+    ElseIf GraphicsWindow.LastKey = "ArrowLeft" And Shapes.GetLeft(triangle) - laneIncrement >= 0 Then
+        Shapes.Move(triangle, Shapes.GetLeft(triangle) - laneIncrement, Shapes.GetTop(triangle))
+        triangleLane = triangleLane - 1
+
+        'Reset keyStreamText
+        keyStream = ""
+        Shapes.setText(keyStreamText, keyStream)
+    EndIf
+
+    If Text.GetLength(GraphicsWindow.LastKey) = 1 Then
+        'Update keyStream (only A-Z have length 1)
+        keyStream = keyStream + GraphicsWindow.LastKey
+
+        removalFlag = 0
+        wordCopy = Array.GetAllIndices(word)
+        For j = 1 To Array.GetItemCount(wordCopy)
+            If wordCopy[j][3] = triangleLane Then
+                If Text.EndsWith(keyStream, wordCopy[j][1]) Then
+                    Shapes.Remove(word[j][2])
+                    Array.RemoveValue(word, j)
+                    removalFlag = 1
+                EndIf
+            EndIf
+        EndFor
+        word = Array.GetAllIndices(word)
+
+        If removalFlag = 1 Then
+            keyStream = ""
+            removalFlag = 0
+        EndIf
+        'Reset keyStreamText
+        Shapes.setText(keyStreamText, keyStream)
+    EndIf
+EndSub
+
+'Main "Loop"
+Timer.Interval = 100
+Timer.Tick = OnTick
+Sub OnTick
+    'Generate a new word
+    If Math.GetRandomNumber(1000) <= 35 Then
+        wordCount = wordCount + 1
+
+        'Text
+        word[wordCount][1] = wordlist[Math.GetRandomNumber(14)]
+        'Shape
+        word[wordCount][2] = Shapes.AddText(word[wordCount][1])
+        'Lane
+        word[wordCount][3] = Math.GetRandomNumber(5)
+        'Speed
+        word[wordCount][4] = Math.GetRandomNumber(4)
+
+        'Starting position
+        Shapes.Move(word[wordCount][2], lanePosX[word[wordCount][3]], 100)
+    EndIf
+
+    'Move all words down
+    word = Array.GetAllIndices(word)
+    For j = 1 To Array.GetItemCount(word)
+        'Game Loss Check
+        If Shapes.GetTop(word[j][2]) + word[j][4] > GraphicsWindow.Height Then
+            youLose = Shapes.AddText("You Lose")
+            Shapes.Move(youLose, GraphicsWindow.Width / 2, GraphicsWindow.Height / 2)
+            Timer.Pause()
+        EndIf
+        Shapes.Move(word[j][2], Shapes.GetLeft(word[j][2]), Shapes.GetTop(word[j][2]) + word[j][4])
+    EndFor
+EndSub
